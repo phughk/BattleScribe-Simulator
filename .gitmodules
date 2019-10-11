@@ -1,3 +1,6 @@
 [submodule "BattleScribe-Simulator"]
 	path = BattleScribe-Simulator
 	url = git@github.com:phughk/BattleScribe-Simulator.git
+[submodule "wh40k"]
+	path = wh40k
+	url = git@github.com:BSData/wh40k.git
