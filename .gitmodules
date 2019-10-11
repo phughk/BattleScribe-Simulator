@@ -1,0 +1,3 @@
+[submodule "BattleScribe-Simulator"]
+	path = BattleScribe-Simulator
+	url = git@github.com:phughk/BattleScribe-Simulator.git
