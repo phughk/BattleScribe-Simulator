@@ -6,16 +6,17 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class EntryLink {
+public class SelectionEntryGroup {
   private String id;
   private String name;
   private Boolean hidden;
   private Boolean collective;
   @JsonProperty( "import" )
   private Boolean _import;
-  private String targetId;
-  private String type;
-  private List<CategoryLink> categoryLinks;
+  private List<SelectionEntry> selectionEntries;
+  private List<EntryLink> entryLinks;
   private List<Constraint> constraints;
   private List<Modifier> modifiers;
+  private String defaultSelectionEntryId;
+  private List<SelectionEntryGroup> selectionEntryGroups;
 }
