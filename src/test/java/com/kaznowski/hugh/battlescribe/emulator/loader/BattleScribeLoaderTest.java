@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BattleScribeLoaderTest {
 
   @Test
-  @Disabled("Fix this after fasterxml serialisation done and fasterxml->domain")
+  @Disabled( "Fix this after fasterxml serialisation done and fasterxml->domain" )
   void datasetContainsUnits() {
     File datasetSource = tyranidDataset();
 
@@ -28,7 +28,7 @@ class BattleScribeLoaderTest {
   }
 
   @Test
-  @Disabled("Fix this after fasterxml serialisation done and fasterxml->domain")
+  @Disabled( "Fix this after fasterxml serialisation done and fasterxml->domain" )
   void statsAreLoaded() {
     File datasetSource = tyranidDataset();
 

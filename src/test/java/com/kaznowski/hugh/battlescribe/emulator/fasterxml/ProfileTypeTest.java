@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProfileTypeTest {
+class ProfileTypeTest {
   @Test
   void canLoadCharacteristics() throws IOException {
     String xml = "<profileType id=\"ecce-8736-aed9-0d2e\" name=\"Stat Damage - S &amp; A\">" + "<characteristicTypes>" +

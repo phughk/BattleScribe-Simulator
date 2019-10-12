@@ -8,4 +8,6 @@ import java.util.List;
 public class Catalogue {
   private List<Publication> publications;
   private List<ProfileType> profileTypes;
+  private List<CategoryEntry> catalogueEntries;
+  private List<EntryLink> entryLinks;
 }
