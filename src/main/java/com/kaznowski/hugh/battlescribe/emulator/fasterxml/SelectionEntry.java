@@ -14,6 +14,8 @@ public class SelectionEntry {
   @JsonProperty( "import" )
   private Boolean _import;
   private String type;
+  private String page; // TODO int?
+  private String publicationId;
   private List<Constraint> constraints;
   private List<Modifier> modifiers;
   private List<Profile> profiles;

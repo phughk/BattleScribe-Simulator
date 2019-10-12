@@ -3,9 +3,13 @@ package com.kaznowski.hugh.battlescribe.emulator.fasterxml;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import static com.kaznowski.hugh.battlescribe.emulator.fixture.RealDatasetFixture.deathGuardDataset;
+import static com.kaznowski.hugh.battlescribe.emulator.fixture.RealDatasetFixture.drukhariDataset;
+import static com.kaznowski.hugh.battlescribe.emulator.fixture.RealDatasetFixture.tyranidDataset;
 import static com.kaznowski.hugh.battlescribe.emulator.helper.StringHelper.multiLine;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -85,7 +89,7 @@ class CatalogueTest {
         "</sharedSelectionEntries>",
         "</catalogue>" );
 
-    XmlMapper xmlMapper = new XmlMapper(  );
+    XmlMapper xmlMapper = new XmlMapper();
     Catalogue catalogue = xmlMapper.readValue( xml, Catalogue.class );
 
     assertEquals( 1, catalogue.getSharedSelectionEntries().size() );
@@ -104,5 +108,25 @@ class CatalogueTest {
   @Test
   void processSharedProfiles() {
 
+  }
+
+  // Integration tests because I dont want to set up *IT
+
+  @Test
+  void parseTyranids() throws IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    Catalogue catalogue = xmlMapper.readValue( new FileReader( tyranidDataset() ), Catalogue.class );
+  }
+
+  @Test
+  void parseDrukhari() throws IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    Catalogue catalogue = xmlMapper.readValue( new FileReader( drukhariDataset() ), Catalogue.class );
+  }
+
+  @Test
+  void parseDeathGuard() throws IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    Catalogue catalogue = xmlMapper.readValue( new FileReader( deathGuardDataset() ), Catalogue.class );
   }
 }

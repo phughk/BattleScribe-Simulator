@@ -13,10 +13,13 @@ public class SelectionEntryGroup {
   private Boolean collective;
   @JsonProperty( "import" )
   private Boolean _import;
+  private String publicationId;
+  private String page;
   private List<SelectionEntry> selectionEntries;
   private List<EntryLink> entryLinks;
   private List<Constraint> constraints;
   private List<Modifier> modifiers;
   private String defaultSelectionEntryId;
   private List<SelectionEntryGroup> selectionEntryGroups;
+  private List<CategoryLink> categoryLinks;
 }

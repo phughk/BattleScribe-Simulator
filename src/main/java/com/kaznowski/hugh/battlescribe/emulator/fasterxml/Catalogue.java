@@ -25,4 +25,7 @@ public class Catalogue {
   private List<SelectionEntryGroup> sharedSelectionEntryGroups;
   private List<Rule> sharedRules;
   private List<Profile> sharedProfiles;
+  private List<InfoLink> infoLinks;
+  private List<CatalogueLink> catalogueLinks;
+  private List<Rule> rules;
 }
