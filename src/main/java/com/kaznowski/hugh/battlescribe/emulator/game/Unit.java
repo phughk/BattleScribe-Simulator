@@ -7,8 +7,15 @@ import lombok.ToString;
 @ToString
 public class Unit {
   private final String name;
+  private final String weaponSkill;
 
-  public Unit( String name ) {
+  public Unit( String name, String weaponSkill ) {
     this.name = name;
+    this.weaponSkill = weaponSkill;
   }
+
+  public String getWeaponSkill() {
+    return weaponSkill;
+  }
+
 }
