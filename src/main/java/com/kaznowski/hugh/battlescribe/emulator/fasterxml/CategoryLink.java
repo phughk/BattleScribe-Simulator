@@ -2,6 +2,8 @@ package com.kaznowski.hugh.battlescribe.emulator.fasterxml;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CategoryLink {
   private String id;
@@ -9,4 +11,7 @@ public class CategoryLink {
   private Boolean hidden;
   private String targetId;
   private Boolean primary;
+  private String publicationId;
+  private List<Constraint> constraints;
+  private List<Modifier> modifiers;
 }

@@ -28,4 +28,7 @@ public class Catalogue {
   private List<InfoLink> infoLinks;
   private List<CatalogueLink> catalogueLinks;
   private List<Rule> rules;
+  private List<SelectionEntry> selectionEntries;
+  private List<InfoGroup> sharedInfoGroups;
+  private List<ForceEntry> forceEntries;
 }

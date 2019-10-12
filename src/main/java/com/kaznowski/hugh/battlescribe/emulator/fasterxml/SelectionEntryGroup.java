@@ -18,6 +18,7 @@ public class SelectionEntryGroup {
   private List<SelectionEntry> selectionEntries;
   private List<EntryLink> entryLinks;
   private List<Constraint> constraints;
+  private List<ModifierGroup> modifierGroups;
   private List<Modifier> modifiers;
   private String defaultSelectionEntryId;
   private List<SelectionEntryGroup> selectionEntryGroups;
