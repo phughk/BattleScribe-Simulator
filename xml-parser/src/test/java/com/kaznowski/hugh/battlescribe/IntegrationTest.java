@@ -30,7 +30,7 @@ class IntegrationTest {
     IdTracker.INSTANCE.save( new File( "Dump.txt" ) );
   }
 
-  private List<File> allDatasets() {
+  public static List<File> allDatasets() {
     return
         Stream.of( Objects.requireNonNull( new File( "../wh40k" ).listFiles() ) )
               .filter( file -> file.getName().endsWith( ".cat" ) )
