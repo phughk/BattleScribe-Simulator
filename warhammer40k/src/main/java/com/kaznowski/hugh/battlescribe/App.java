@@ -1,6 +1,8 @@
-package com.kaznowski.hugh.battlescribe.domain;
+package com.kaznowski.hugh.battlescribe;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.kaznowski.hugh.battlescribe.domain.UnitFactory;
+import com.kaznowski.hugh.battlescribe.domain.model.Unit;
 import com.kaznowski.hugh.battlescribe.fasterxml.Catalogue;
 import com.kaznowski.hugh.battlescribe.fasterxml.SelectionEntry;
 
@@ -13,8 +15,8 @@ import java.util.function.Predicate;
 
 public class App {
   public static void main( String[] args ) throws IOException {
-//    File file = new File( "../wh40k/Imperium - Grey Knights.cat" );
-    File file = new File( "../wh40k/Tyranids.cat" );
+    File file = new File( "../wh40k/Imperium - Grey Knights.cat" );
+//    File file = new File( "../wh40k/Tyranids.cat" );
     XmlMapper xmlMapper = new XmlMapper();
     Catalogue catalogue = xmlMapper.readValue( file, Catalogue.class );
 
@@ -27,7 +29,8 @@ public class App {
     Optional.ofNullable( catalogue.getSharedSelectionEntries() ).ifPresent( allSelectionEntries::addAll );
     for ( SelectionEntry selectionEntry : allSelectionEntries ) {
       if ( selectionEntry.getType() != SelectionEntry.Type.upgrade ) {
-        System.out.printf( "%s : %s\n", selectionEntry.getName(), selectionEntry.getType() );
+        Unit unit = unitFactory.processUnit( selectionEntry );
+        System.out.println( "unit = " + unit );
       }
     }
   }
