@@ -3,6 +3,7 @@ package com.kaznowski.hugh.battlescribe.domain;
 import com.kaznowski.hugh.battlescribe.App;
 import com.kaznowski.hugh.battlescribe.warhammer40k.W40kProfileType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
@@ -10,7 +11,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPathConstants;
@@ -45,8 +48,21 @@ public class W40kProfileTypeTest {
         W40kProfileType.getById( typeId );
       }
       catch ( Exception e ) {
-        Assertions.fail(assertMessage, e);
+        Assertions.fail( assertMessage, e );
       }
+    }
+  }
+
+  @Test
+  void noDuplicateTypeIds() {
+    // Given all the type ids
+    List<String> typeIds = Arrays.stream( W40kProfileType.values() )
+                                 .map( p -> p.typeId )
+                                 .collect( Collectors.toList() );
+
+    // then there are no duplicates
+    for (String typeId:typeIds) {
+      Assertions.assertEquals( 1, typeIds.stream().filter( typeId::equals ).count() );
     }
   }
 
