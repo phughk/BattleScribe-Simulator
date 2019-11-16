@@ -2,16 +2,20 @@ package com.kaznowski.hugh.battlescribe.domain;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kaznowski.hugh.battlescribe.DatasetFixtures;
+import com.kaznowski.hugh.battlescribe.domain.model.Model;
 import com.kaznowski.hugh.battlescribe.domain.model.Unit;
 import com.kaznowski.hugh.battlescribe.fasterxml.Catalogue;
 import com.kaznowski.hugh.battlescribe.fasterxml.SelectionEntry;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -28,7 +32,10 @@ public class UnitFactoryTest {
 
     // when Unit data is processed
     UnitFactory unitFactory = new UnitFactory();
-    Unit paladinAncient = unitFactory.processUnit( simpleUnit );
+    Unit paladinAncientUnit = unitFactory.processUnit( simpleUnit );
+    List<Model> paladinAncientModels = new ArrayList<>( paladinAncientUnit.getModels() );
+    assertEquals( 1, paladinAncientModels.size() );
+    Model paladinAncient = paladinAncientModels.get( 0 );
 
     // then the data is available
     assertEquals( "5\"", paladinAncient.getMovement() );
@@ -42,6 +49,10 @@ public class UnitFactoryTest {
     assertEquals( "2+/5++", paladinAncient.getSaves() );
   }
 
+  /**
+   * Units that have only upgraded models are described in the selectionEntry's selectionEntryGroups
+   * The number is described with the modifier condition linking to the selectionEntryGroups
+   */
   @Test
   void canLoadLinkedProfileData() throws Exception { // TODO name change?
     // given a unit with linked data
@@ -54,9 +65,12 @@ public class UnitFactoryTest {
     // when Unit data is processed
     UnitFactory unitFactory = new UnitFactory();
     Unit strikeSquad = unitFactory.processUnit( linkedUnit );
+    List<Model> models = new ArrayList<>( strikeSquad.getModels() );
+    assertThat( models.size(), greaterThan( 0 ) );
 
     // then
-    assertNotNull( strikeSquad.getSaves() );
+    Model strikeSquadModel = models.get( 0 );
+    assertNotNull( strikeSquadModel.getSaves() );
   }
 
   private static Predicate<SelectionEntry> matchingName( String name ) {
