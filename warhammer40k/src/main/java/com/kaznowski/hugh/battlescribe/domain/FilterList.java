@@ -1,12 +1,18 @@
 package com.kaznowski.hugh.battlescribe.domain;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class FilterList<E> {
+public class FilterList<E> implements Iterable<E> {
   final List<E> list;
+
+  public FilterList( E[] array ) {
+    this( Arrays.asList( array ) );
+  }
 
   public FilterList( List<E> list ) {
     Objects.requireNonNull( list );
@@ -29,6 +35,11 @@ public class FilterList<E> {
 
   public E getOnly() {
     return get( a -> true );
+  }
+
+  @Override
+  public Iterator<E> iterator() {
+    return list.iterator();
   }
 
   static class NoMatchException extends RuntimeException {

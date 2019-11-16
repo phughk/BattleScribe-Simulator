@@ -1,7 +1,6 @@
-package com.kaznowski.hugh.battlescribe.domain;
+package com.kaznowski.hugh.battlescribe.warhammer40k;
 
-import com.kaznowski.hugh.battlescribe.App;
-import com.kaznowski.hugh.battlescribe.warhammer40k.W40kProfileType;
+import com.kaznowski.hugh.battlescribe.DatasetFixtures;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -67,7 +66,7 @@ public class W40kProfileTypeTest {
   }
 
   private static File[] files() {
-    List<File> files = App.allDatasets();
+    List<File> files = DatasetFixtures.allDatasets();
     File[] fileArray = new File[files.size()];
     return files.toArray( fileArray );
   }

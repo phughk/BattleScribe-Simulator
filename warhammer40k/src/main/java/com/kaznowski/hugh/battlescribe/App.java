@@ -13,19 +13,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class App {
   public static void main( String[] args ) throws IOException {
-//    File file = new File( "../wh40k/Imperium - Grey Knights.cat" );
-//    File file = new File( "../wh40k/Tyranids.cat" );
-//    File file = new File( "../wh40k/Orks.cat" );
+    List<File> fileList = new ArrayList<>();
+    fileList.add( new File( "../wh40k/Imperium - Grey Knights.cat" ) );
+//    fileList.add( new File( "../wh40k/Tyranids.cat" ) );
+//    fileList.add( new File( "../wh40k/Orks.cat" ) );
+//    fileList.addAll( allDatasets() );
     Map<File,Exception> failures = new HashMap<>();
-    for ( File file : allDatasets() ) {
+    for ( File file : fileList ) {
       try {
         mainFile( file );
       }
@@ -58,14 +56,4 @@ public class App {
     }
   }
 
-  private static Predicate<SelectionEntry> notUpgrades() {
-    return selectionEntry -> selectionEntry.getType() != SelectionEntry.Type.upgrade;
-  }
-
-  public static List<File> allDatasets() {
-    return
-        Stream.of( Objects.requireNonNull( new File( "../wh40k" ).listFiles() ) )
-              .filter( file -> file.getName().endsWith( ".cat" ) )
-              .collect( Collectors.toList() );
-  }
 }
