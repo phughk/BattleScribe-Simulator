@@ -22,7 +22,7 @@ public class SelectionEntryTest {
     assertEquals( true, selectionEntry.getHidden() );
     assertEquals( true, selectionEntry.getCollective() );
     assertEquals( true, selectionEntry.get_import() );
-    assertEquals( "unit", selectionEntry.getType() );
+    assertEquals( SelectionEntry.Type.unit, selectionEntry.getType() );
   }
 
   @Test
@@ -33,7 +33,7 @@ public class SelectionEntryTest {
         "</modifiers>",
         "</selection>" );
 
-    XmlMapper xmlMapper = new XmlMapper(  );
+    XmlMapper xmlMapper = new XmlMapper();
     SelectionEntry selectionEntry = xmlMapper.readValue( xml, SelectionEntry.class );
     assertEquals( 1, selectionEntry.getModifiers().size() );
   }

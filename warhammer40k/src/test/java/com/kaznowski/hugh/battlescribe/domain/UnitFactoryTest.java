@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UnitFactoryTest {
   @Test
@@ -70,7 +69,16 @@ public class UnitFactoryTest {
 
     // then
     Model strikeSquadModel = models.get( 0 );
-    assertNotNull( strikeSquadModel.getSaves() );
+    assertEquals( "Grey Knight", strikeSquadModel.getName() );
+    assertEquals( "6\"", strikeSquadModel.getMovement() );
+    assertEquals( "3+", strikeSquadModel.getWeaponSkill() );
+    assertEquals( "3+", strikeSquadModel.getBallisticSkill() );
+    assertEquals( "4", strikeSquadModel.getStrength() );
+    assertEquals( "4", strikeSquadModel.getToughness() );
+    assertEquals( "1", strikeSquadModel.getWounds() );
+    assertEquals( "1", strikeSquadModel.getAttacks() );
+    assertEquals( "7", strikeSquadModel.getLeadership() );
+    assertEquals( "3+", strikeSquadModel.getSaves() );
   }
 
   private static Predicate<SelectionEntry> matchingName( String name ) {

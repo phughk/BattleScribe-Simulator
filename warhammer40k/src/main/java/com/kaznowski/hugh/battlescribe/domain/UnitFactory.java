@@ -4,21 +4,26 @@ import com.kaznowski.hugh.battlescribe.domain.model.Model;
 import com.kaznowski.hugh.battlescribe.domain.model.Unit;
 import com.kaznowski.hugh.battlescribe.fasterxml.Characteristic;
 import com.kaznowski.hugh.battlescribe.fasterxml.Constraint;
+import com.kaznowski.hugh.battlescribe.fasterxml.InfoLink;
 import com.kaznowski.hugh.battlescribe.fasterxml.Profile;
 import com.kaznowski.hugh.battlescribe.fasterxml.SelectionEntry;
 import com.kaznowski.hugh.battlescribe.fasterxml.SelectionEntryGroup;
 import com.kaznowski.hugh.battlescribe.warhammer40k.W40kProfileType;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class UnitFactory {
+
   public Unit processUnit( SelectionEntry selectionEntry ) {
     Unit unit = new Unit();
     unit.setName( selectionEntry.getName() );
     if ( selectionEntry.getProfiles() != null ) {
+      log.debug( "Unit has profile" );
       Optional<Profile> profileOptional =
           selectionEntry.getProfiles()
                         .stream()
@@ -28,9 +33,17 @@ public class UnitFactory {
         Profile profile = profileOptional.get();
         unit.setModels( singleModelUnit( profile, unit.getName() ) );
       }
-      else {
-        List<SelectionEntryGroup> unitsSelectionEntryGroups = selectionEntry.getSelectionEntryGroups();
+    }
+    else {
+      log.debug( "Unit doesn't have profile" );
+      List<SelectionEntryGroup> unitsSelectionEntryGroups = selectionEntry.getSelectionEntryGroups();
+      List<Model> models = new ArrayList<>();
+      for ( SelectionEntryGroup selectionEntryGroup : unitsSelectionEntryGroups ) {
+        List<Model> processedModels = multiModelUnit( selectionEntryGroup );
+        log.debug( "Processed models {}", processedModels );
+        models.addAll( processedModels );
       }
+      unit.setModels( models );
     }
     return unit;
   }
@@ -45,16 +58,44 @@ public class UnitFactory {
     Integer[] minMax = minMaxConstraint( unitsSelectionEntryGroup.getConstraints() );
     Integer min = minMax[0];
     Integer max = minMax[1];
+    log.debug( "Min = {}, Max={}", min, max );
     // Fill the unit with minimum number of default models
     List<Model> models = new ArrayList<>();
-    for (SelectionEntry selectionEntry: unitsSelectionEntryGroup.getSelectionEntries() ) {
+    for ( SelectionEntry selectionEntry : unitsSelectionEntryGroup.getSelectionEntries() ) {
       // has an info link that points to the profile contained in shared profiles of root that has characteristics
+      InfoLink profileInfoLink = selectionEntry.getInfoLinks().stream()
+                                               .filter( infoLink -> infoLink.getType().equals( InfoLink.Type.profile ) )
+                                               .findFirst()
+                                               .orElseThrow( () -> new RuntimeException(
+                                                   "Unable to find infolink for selection entry " + selectionEntry ) );
+      Profile profile = Profile.findById( profileInfoLink.getTargetId() );
+      for ( int i = 0; i < min; i++ ) {
+        Model model = modelFromCharacteristicList( profile.getCharacteristics() );
+        model.setName( profile.getName() );
+        models.add( model );
+      }
     }
+    return models;
+  }
+
+  private static Model modelFromCharacteristicList( List<Characteristic> characteristics ) {
+    Model model = new Model();
+    CharacteristicList characteristicList = new CharacteristicList( characteristics );
+    model.setMovement( characteristicList.getByName( "M" ).getValue() );
+    model.setWeaponSkill( characteristicList.getByName( "WS" ).getValue() );
+    model.setBallisticSkill( characteristicList.getByName( "BS" ).getValue() );
+    model.setStrength( characteristicList.getByName( "S" ).getValue() );
+    model.setToughness( characteristicList.getByName( "T" ).getValue() );
+    model.setWounds( characteristicList.getByName( "W" ).getValue() );
+    model.setAttacks( characteristicList.getByName( "A" ).getValue() );
+    model.setLeadership( characteristicList.getByName( "Ld" ).getValue() );
+    model.setSaves( characteristicList.getByName( "Save" ).getValue() );
+    return model;
   }
 
   private static Integer[] minMaxConstraint( List<Constraint> constraints ) {
     Integer[] minMax = new Integer[2];
-    minMax[0] = 0;
+    minMax[0] = 1; // TODO should be 0 for conditional
     minMax[1] = 100;
     return minMax;
   }
@@ -62,18 +103,8 @@ public class UnitFactory {
   private static List<Model> singleModelUnit( Profile profile, String unitName ) {
     try {
       List<Characteristic> properties = profile.getCharacteristics();
-      CharacteristicList characteristicList = new CharacteristicList( properties );
-      Model model = new Model();
+      Model model = modelFromCharacteristicList( properties );
       model.setName( unitName );
-      model.setMovement( characteristicList.getByName( "M" ).getValue() );
-      model.setWeaponSkill( characteristicList.getByName( "WS" ).getValue() );
-      model.setBallisticSkill( characteristicList.getByName( "BS" ).getValue() );
-      model.setStrength( characteristicList.getByName( "S" ).getValue() );
-      model.setToughness( characteristicList.getByName( "T" ).getValue() );
-      model.setWounds( characteristicList.getByName( "W" ).getValue() );
-      model.setAttacks( characteristicList.getByName( "A" ).getValue() );
-      model.setLeadership( characteristicList.getByName( "Ld" ).getValue() );
-      model.setSaves( characteristicList.getByName( "Save" ).getValue() );
       return Arrays.asList( model );
     }
     catch ( Exception e ) {

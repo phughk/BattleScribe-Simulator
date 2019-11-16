@@ -3,10 +3,15 @@ package com.kaznowski.hugh.battlescribe.fasterxml;
 import com.kaznowski.hugh.battlescribe.IdTracker;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class Profile {
+
+  private static final Map<String,Profile> referenceTable = new HashMap<>();
+
   private String id;
   private String name;
   private String publicationId;
@@ -19,6 +24,7 @@ public class Profile {
 
   public void setId( String id ) {
     IdTracker.INSTANCE.register( id );
+    referenceTable.put( id, this );
     this.id = id;
   }
 
@@ -40,5 +46,9 @@ public class Profile {
   public void setTypeName( String typeName ) {
     IdTracker.INSTANCE.register( typeName );
     this.typeName = typeName;
+  }
+
+  public static Profile findById( String id ) {
+    return referenceTable.get( id );
   }
 }

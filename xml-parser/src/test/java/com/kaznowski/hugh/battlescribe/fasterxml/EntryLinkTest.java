@@ -22,7 +22,7 @@ class EntryLinkTest {
     assertEquals( true, entryLink.getCollective() );
     assertEquals( true, entryLink.get_import() );
     assertEquals( "135-246", entryLink.getTargetId() );
-    assertEquals( "selectionEntry", entryLink.getType() );
+    assertEquals( EntryLink.Type.selectionEntry, entryLink.getType() );
   }
 
   @Test
@@ -31,7 +31,7 @@ class EntryLinkTest {
         "<categoryLink id=\"5e82-5890-d2e2-602c\" name=\"New CategoryLink\" hidden=\"false\" targetId=\"e888-1504-aa61-95ff\" primary=\"true\"/>" +
         "</categoryLinks>" + "</entryLink>";
 
-    XmlMapper xmlMapper = new XmlMapper(  );
+    XmlMapper xmlMapper = new XmlMapper();
     EntryLink entryLink = xmlMapper.readValue( xml, EntryLink.class );
 
     assertEquals( 1, entryLink.getCategoryLinks().size() );
